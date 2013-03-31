@@ -56,8 +56,7 @@ libportable_arch_src_files += \
 			arch-mips/syscall.c \
 			arch-mips/timer.c \
 			arch-mips/timerfd.c \
-			arch-mips/waitpid.c \
-			arch-mips/fenv.c
+			arch-mips/waitpid.c
 
 libportable_arch_src_files += \
 			arch-mips/_setjmp.S \
@@ -68,8 +67,7 @@ endif
 
 ifeq ($(TARGET_ARCH),arm)
 libportable_arch_src_files += \
-			arch-arm/unwind.c \
-			arch-arm/fenv.c
+			arch-arm/unwind.c
 endif
 
 ifeq ($(TARGET_ARCH),x86)
@@ -78,8 +76,7 @@ libportable_arch_src_files += \
 			arch-x86/fcntl.c \
 			arch-x86/ioctl.c \
 			arch-x86/open.c \
-			arch-x86/stat.c \
-			arch-x86/fenv.c
+			arch-x86/stat.c
 endif
 
 LOCAL_SRC_FILES := \
