@@ -14,10 +14,23 @@
  * limitations under the License.
  */
 
-#include <unistd.h>
-#include <sys/socket.h>
-#include <sys/linux-syscalls.h>
+#include <portability.h>
+#include <signal.h>
+#include <signal_portable.h>
+#include <time.h>
 
-int socket_portable(int domain, int type, int protocol) {
-    return socket(domain, type, protocol);
+int WRAP(timer_create)(clockid_t clockid, struct sigevent *portable_evp,
+                          timer_t *timerid)
+{
+    struct sigevent native_sigevent, *evp = portable_evp;
+
+    if (!invalid_pointer(portable_evp) &&
+        (evp->sigev_notify == SIGEV_SIGNAL ||
+         evp->sigev_notify == SIGEV_THREAD_ID)) {
+
+        native_sigevent = *portable_evp;
+        evp = &native_sigevent;
+        evp->sigev_signo = signum_pton(evp->sigev_signo);
+    }
+    return REAL(timer_create)(clockid, evp, timerid);
 }

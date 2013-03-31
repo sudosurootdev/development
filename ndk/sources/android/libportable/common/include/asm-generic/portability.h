@@ -14,25 +14,18 @@
  * limitations under the License.
  */
 
-#include <stat_portable.h>
+#ifndef _ASM_PORTABILITY_H_
+#define _ASM_PORTABILITY_H_
 
-/* Note: The Portable Header will define stat to stat_portable */
-int stat_portable(const char *path, struct stat_portable *s)
-{
-   return stat(path, s);
-}
+#if !defined(__HOST__)
+#define WRAP(f)     f ## _portable
+#define REAL(f)     f
+#else
+/* On host app link with libpportable.a with -Wl,--wrap=symbol, which resolve symbol symbol to __wrap_symbol,
+ * and __real_symbol refer to the original symbol
+ */
+#define WRAP(f)     __wrap_ ## f
+#define REAL(f)     __real_ ## f
+#endif
 
-int fstat_portable(int fd, struct stat_portable *s)
-{
-    return fstat(fd, s);
-}   
-
-int lstat_portable(const char *path, struct stat_portable *s)
-{
-    return lstat(path, s);
-}
-
-int fstatat_portable(int dirfd, const char *path, struct stat_portable *s, int flags)
-{
-    return fstatat(dirfd, path, s, flags);
-}
+#endif /* _ASM_PORTABILITY_H_ */
